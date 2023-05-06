@@ -8,3 +8,5 @@ My goal is to create a golf game with:
 3. At least one golf hole
 
 I'm started working on this project by following the ultimate introduction to pygame by Clear Code (https://www.youtube.com/watch?v=AY9MnQ4x3zk) to set up the intial conditions like window, how to create images, etc...
+
+Sky graphic is designed by Freepik
