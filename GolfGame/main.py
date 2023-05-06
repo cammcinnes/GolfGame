@@ -5,7 +5,7 @@ from sys import exit
 width = 800
 height = 400
 
-pygame.init
+pygame.init()
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Speed Golf")
 clock = pygame.time.Clock()
@@ -18,6 +18,15 @@ clock = pygame.time.Clock()
 sky_surface = pygame.image.load('graphics/sky.jpg')
 sky_surface = pygame.transform.scale(sky_surface, (width, height))
 
+#create a wood platform
+wood_surface = pygame.Surface((600, 5))
+wood_surface.fill('brown2')
+
+#create a score board
+#create font
+test_font = pygame.font.Font('graphics/munro.ttf', 25)
+
+text_surface = test_font.render('Score: ', True, 'White')
 
 while True:
     #check to see if the player has closed the window; close if true
@@ -25,9 +34,12 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-            
+    
+    # draw the surfaces on the display
     screen.blit(sky_surface, (0, 0))
-    # draw on the different elements
+    screen.blit(wood_surface, (100, 300))
+    screen.blit(text_surface, (600, 5))
+
     # update all the elements
     pygame.display.update()
     clock.tick(60)
