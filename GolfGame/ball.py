@@ -15,7 +15,18 @@ class ball(object):
         pygame.draw.circle(win, (0,0,0), (self.x, self.y), self.radius)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius - 1)
 
+    # sets velocity and positon of ball after being hit
     @staticmethod
-    def ballPath (startx, starty, power, angle, time):
-        pass
+    def ballPath (startX, startY, power, angle, time):
+        vX = math.cos(angle) * power
+        vY = math.sin(angle) * power
+
+        distX = vX * time
+        distY = vY * time + ((-4.9 * time**2) / 2)
+
+        newX = round(distX + startX)
+        newY = round(startY - distY)
+
+        return (newX, newY)
+
     
