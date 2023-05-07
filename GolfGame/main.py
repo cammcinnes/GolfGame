@@ -1,4 +1,5 @@
 import pygame
+import ball
 from sys import exit
 
 # create a display surface 
