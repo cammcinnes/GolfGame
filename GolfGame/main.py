@@ -23,7 +23,9 @@ sky_surface = pygame.image.load('graphics/sky.jpg')
 sky_surface = pygame.transform.scale(sky_surface, (width, height)).convert()
 
 #create a wood platform
-wood = pygame.Surface((600, 5)).convert()
+wood_h = 5
+wood_w = 600
+wood = pygame.Surface((wood_w, wood_h)).convert()
 wood.fill('brown2')
 wood_rect = wood.get_rect(topleft = (100, 300))
 
@@ -100,12 +102,13 @@ def collision(rleft, rtop, width, height, center_x, center_y, radius):
 
     return False  # no collision detected
 
-    
+
 while True:
 
     #actions if ball is shooting or not
     if shoot:
-        if golfBall.y < 400 - golfBall.radius:
+        hit = collision(wood_rect[0], wood_rect[1], wood_w, wood_h, golfBall.x, golfBall.y, golfBall.radius)
+        if golfBall.y < 400 - golfBall.radius and not hit:
             time += 0.2
             po = ball.ballPath(x, y, power, angle, time)
             golfBall.x = po[0]
