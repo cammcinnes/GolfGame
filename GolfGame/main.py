@@ -20,11 +20,13 @@ clock = pygame.time.Clock()
 
 # create a sky_surface background
 sky_surface = pygame.image.load('graphics/sky.jpg')
-sky_surface = pygame.transform.scale(sky_surface, (width, height))
+sky_surface = pygame.transform.scale(sky_surface, (width, height)).convert()
 
 #create a wood platform
-wood_surface = pygame.Surface((600, 5))
-wood_surface.fill('brown2')
+wood = pygame.Surface((600, 5)).convert()
+wood.fill('brown2')
+wood_rect = wood.get_rect(topleft = (100, 300))
+
 
 #create a score board
 test_font = pygame.font.Font('graphics/munro.ttf', 25)
@@ -42,7 +44,7 @@ shoot = False
 # function for drawing background, golf ball and intensity line
 def redrawWindow():
     screen.blit(sky_surface, (0, 0))
-    screen.blit(wood_surface, (100, 300))
+    screen.blit(wood, wood_rect)
     screen.blit(text_surface, (600, 5))
 
     golfBall.draw(screen)
@@ -70,8 +72,35 @@ def findAngle(pos):
         angle = math.pi + abs(angle)
     
     return angle
-    
 
+# Check for collision of ball with surface
+def collision(rleft, rtop, width, height, center_x, center_y, radius):
+    # complete boundbox of the rectangle
+    rright, rbottom = rleft + width/2, rtop + height/2
+
+    # bounding box of the circle
+    cleft, ctop     = center_x-radius, center_y-radius
+    cright, cbottom = center_x+radius, center_y+radius
+
+    # trivial reject if bounding boxes do not intersect
+    if rright < cleft or rleft > cright or rbottom < ctop or rtop > cbottom:
+        return False  # no collision possible
+
+    # check whether any point of rectangle is inside circle's radius
+    for x in (rleft, rleft+width):
+        for y in (rtop, rtop+height):
+            # compare distance between circle's center point and each point of
+            # the rectangle with the circle's radius
+            if math.hypot(x-center_x, y-center_y) <= radius:
+                return True  # collision detected
+
+    # check if center of circle is inside rectangle
+    if rleft <= center_x <= rright and rtop <= center_y <= rbottom:
+        return True  # overlaid
+
+    return False  # no collision detected
+
+    
 while True:
 
     #actions if ball is shooting or not
