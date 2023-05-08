@@ -106,6 +106,8 @@ def collision(rleft, rtop, width, height, center_x, center_y, radius):
 while True:
 
     #actions if ball is shooting or not
+    # TODO: Make golf ball stay on wood when it collides; fix that at high speed golf ball goes through platform; make golf ball switch directions when hits wood
+    # TODO: Make golf ball bounce
     if shoot:
         hit = collision(wood_rect[0], wood_rect[1], wood_w, wood_h, golfBall.x, golfBall.y, golfBall.radius)
         if golfBall.y < 400 - golfBall.radius and not hit:
