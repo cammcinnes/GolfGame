@@ -35,13 +35,14 @@ test_font = pygame.font.Font('graphics/munro.ttf', 25)
 text_surface = test_font.render('Score: ', True, 'White')
 
 #create a golf ball object
-golfBall = ball (400, height - 6, 5, (255,255,255))
+golfBall = ball (100, 300 - 6, 5, (255,255,255))
 x = 0
 y = 0
 time = 0
 power = 0
 angle = 0
 shoot = False
+collide = False
 
 # function for drawing background, golf ball and intensity line
 def redrawWindow():
@@ -76,9 +77,11 @@ def findAngle(pos):
     return angle
 
 # Check for collision of ball with surface
-def collision(rleft, rtop, width, height, center_x, center_y, radius):
-    # complete boundbox of the rectangle
-    rright, rbottom = rleft + width/2, rtop + height/2
+def collision(rect, center_x, center_y, radius):
+    rleft = rect.x
+    rtop = rect.y
+    rright = rect.right
+    rbottom =  rect.bottom
 
     # bounding box of the circle
     cleft, ctop     = center_x-radius, center_y-radius
@@ -102,22 +105,32 @@ def collision(rleft, rtop, width, height, center_x, center_y, radius):
 
     return False  # no collision detected
 
-
 while True:
 
     #actions if ball is shooting or not
     # TODO: Make golf ball stay on wood when it collides; fix that at high speed golf ball goes through platform; make golf ball switch directions when hits wood
     # TODO: Make golf ball bounce
     if shoot:
-        hit = collision(wood_rect[0], wood_rect[1], wood_w, wood_h, golfBall.x, golfBall.y, golfBall.radius)
-        if golfBall.y < 400 - golfBall.radius and not hit:
-            time += 0.2
-            po = ball.ballPath(x, y, power, angle, time)
-            golfBall.x = po[0]
-            golfBall.y = po[1]
+        if  golfBall.y < height - golfBall.radius:
+            hit = collision(wood_rect, golfBall.x, golfBall.y, golfBall.radius)
+            # TODO: create the bounce of ball
+            if hit:
+                if golfBall.y > wood_rect.top:
+                    golfBall.y = golfBall.y - golfBall.radius
+                    shoot = False
+                else:
+                    golfBall.y = golfBall.y + golfBall.radius
+                    shoot = False
+
+            else:
+                time += 0.2
+                po = ball.ballPath(x, y, power, angle, time, collide)
+                golfBall.x = po[0]
+                golfBall.y = po[1]
+            
         else:
-             shoot = False
-             golfBall.y = height - (golfBall.radius + 1)
+            golfBall.y = height - (golfBall.radius + 1)
+            shoot = False
 
 
     # find position for line from ball to cursor
@@ -138,6 +151,7 @@ while True:
                 time = 0
                 power =  math.sqrt((line[1][1] - line [0][1])**2 + (line[1][0] - line[0][0])**2) / 8
                 angle = findAngle(pos)
+                collide = False
 
 
     # update all the elements
