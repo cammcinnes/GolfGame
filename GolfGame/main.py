@@ -124,6 +124,7 @@ while True:
                 po = ball.ballPath(x, y, velx, vely, time)
                 golfBall.x = po[0]
                 golfBall.y = po[1]
+                # Under a speed of 1 the stroke will stop
                 if velx < 1 and velx > -1:
                     shoot = False
             
