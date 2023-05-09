@@ -35,14 +35,16 @@ test_font = pygame.font.Font('graphics/munro.ttf', 25)
 text_surface = test_font.render('Score: ', True, 'White')
 
 #create a golf ball object
-golfBall = ball (100, 300 - 6, 5, (255,255,255))
+golfBall = ball (100, 300 - 7, 5, (255,255,255))
 x = 0
 y = 0
+velx = 0
+vely = 0
 time = 0
 power = 0
 angle = 0
 shoot = False
-collide = False
+
 
 # function for drawing background, golf ball and intensity line
 def redrawWindow():
@@ -108,23 +110,22 @@ def collision(rect, center_x, center_y, radius):
 while True:
 
     #actions if ball is shooting or not
-    # TODO: Make golf ball stay on wood when it collides; fix that at high speed golf ball goes through platform; make golf ball switch directions when hits wood
-    # TODO: Make golf ball bounce
+    # TODO: Make golf ball stay on wood when it collides; make golf ball switch directions when hits wood
     if shoot:
         if  golfBall.y < height - golfBall.radius:
             hit = collision(wood_rect, golfBall.x, golfBall.y, golfBall.radius)
             # TODO: create the bounce of ball
             if hit:
-                if golfBall.y > wood_rect.top:
-                    golfBall.y = golfBall.y - golfBall.radius
-                    shoot = False
-                else:
-                    golfBall.y = golfBall.y + golfBall.radius
-                    shoot = False
-
+                time += 0.2
+                vely = vely # when this is made negative it goes to the bottom of the screen really really fast
+                po = ball.ballPath(x, y, velx, vely, time)
+                golfBall.x = po[0]
+                golfBall.y = po[1]
+                
+                
             else:
                 time += 0.2
-                po = ball.ballPath(x, y, power, angle, time, collide)
+                po = ball.ballPath(x, y, velx, vely, time)
                 golfBall.x = po[0]
                 golfBall.y = po[1]
             
@@ -148,10 +149,11 @@ while True:
                 shoot = True
                 x = golfBall.x
                 y = golfBall.y
-                time = 0
-                power =  math.sqrt((line[1][1] - line [0][1])**2 + (line[1][0] - line[0][0])**2) / 8
                 angle = findAngle(pos)
-                collide = False
+                power =  math.sqrt((line[1][1] - line [0][1])**2 + (line[1][0] - line[0][0])**2) / 8
+                velx = math.cos(angle) * power
+                vely = math.sin(angle) * power
+                time = 0
 
 
     # update all the elements
