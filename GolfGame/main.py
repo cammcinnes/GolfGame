@@ -124,8 +124,9 @@ while True:
                 po = ball.ballPath(x, y, velx, vely, time)
                 golfBall.x = po[0]
                 golfBall.y = po[1]
-                
-                
+                if velx < 1 and velx > -1:
+                    shoot = False
+            
             else:
                 time += 0.2
                 po = ball.ballPath(x, y, velx, vely, time)
@@ -133,7 +134,8 @@ while True:
                 golfBall.y = po[1]
             
         else:
-            golfBall.y = height - (golfBall.radius + 1)
+            golfBall.x = 100
+            golfBall.y = 300 - 7
             shoot = False
 
 
