@@ -114,12 +114,13 @@ while True:
     if shoot:
         if  golfBall.y < height - golfBall.radius:
             hit = collision(wood_rect, golfBall.x, golfBall.y, golfBall.radius)
-            #TODO: stop the golf ball once its reached a certain velocity on the wood
+            #TODO: stop the golf ball once its reached a certain velocity on the wood; fix bug when hits bottom of wood
             if hit:
                 time = 0
                 x = golfBall.x
+                y = golfBall.y - 6
                 velx = velx * 0.75
-                vely = vely * 0.5 # when this is made negative it goes to the bottom of the screen really really fast
+                vely = vely * 0.5 
                 po = ball.ballPath(x, y, velx, vely, time)
                 golfBall.x = po[0]
                 golfBall.y = po[1]
