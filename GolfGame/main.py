@@ -114,10 +114,12 @@ while True:
     if shoot:
         if  golfBall.y < height - golfBall.radius:
             hit = collision(wood_rect, golfBall.x, golfBall.y, golfBall.radius)
-            # TODO: create the bounce of ball
+            #TODO: stop the golf ball once its reached a certain velocity on the wood
             if hit:
-                time += 0.2
-                vely = vely # when this is made negative it goes to the bottom of the screen really really fast
+                time = 0
+                x = golfBall.x
+                velx = velx * 0.75
+                vely = vely * 0.5 # when this is made negative it goes to the bottom of the screen really really fast
                 po = ball.ballPath(x, y, velx, vely, time)
                 golfBall.x = po[0]
                 golfBall.y = po[1]
