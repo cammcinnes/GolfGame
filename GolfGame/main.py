@@ -29,6 +29,9 @@ wood = pygame.Surface((wood_w, wood_h)).convert()
 wood.fill('brown2')
 wood_rect = wood.get_rect(topleft = (100, 300))
 
+#create hole
+hole_surface = pygame.image.load('graphics/flag.png')
+hole_surface = pygame.transform.scale(hole_surface,(90, 100)).convert_alpha()
 
 #create font
 test_font = pygame.font.Font('graphics/munro.ttf', 25)
@@ -51,9 +54,10 @@ def redrawWindow():
     text_surface = test_font.render('Strokes:' + str(score), True, 'White')
     screen.blit(sky_surface, (0, 0))
     screen.blit(wood, wood_rect)
-    screen.blit(text_surface, (600, 5))
+    screen.blit(text_surface, (675, 5))
 
     golfBall.draw(screen)
+    screen.blit(hole_surface, (560, 203))
     pygame.draw.line(screen, (255, 255, 255), line[0], line[1])
 
     pygame.display.update()
