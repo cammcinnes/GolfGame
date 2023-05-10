@@ -30,9 +30,9 @@ wood.fill('brown2')
 wood_rect = wood.get_rect(topleft = (100, 300))
 
 
-#create a score board
+#create font
 test_font = pygame.font.Font('graphics/munro.ttf', 25)
-text_surface = test_font.render('Score: ', True, 'White')
+
 
 #create a golf ball object
 golfBall = ball (100, 300 - 7, 5, (255,255,255))
@@ -44,10 +44,11 @@ time = 0
 power = 0
 angle = 0
 shoot = False
-
+score = 0
 
 # function for drawing background, golf ball and intensity line
 def redrawWindow():
+    text_surface = test_font.render('Strokes:' + str(score), True, 'White')
     screen.blit(sky_surface, (0, 0))
     screen.blit(wood, wood_rect)
     screen.blit(text_surface, (600, 5))
@@ -110,11 +111,10 @@ def collision(rect, center_x, center_y, radius):
 while True:
 
     #actions if ball is shooting or not
-    # TODO: Make golf ball stay on wood when it collides; make golf ball switch directions when hits wood
     if shoot:
         if  golfBall.y < height - golfBall.radius:
             hit = collision(wood_rect, golfBall.x, golfBall.y, golfBall.radius)
-            #TODO: stop the golf ball once its reached a certain velocity on the wood; fix bug when hits bottom of wood
+            #TODO: fix bug when hits bottom of wood
             if hit:
                 time = 0
                 x = golfBall.x
@@ -153,6 +153,7 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if shoot == False:
                 shoot = True
+                score += 1
                 x = golfBall.x
                 y = golfBall.y
                 angle = findAngle(pos)
