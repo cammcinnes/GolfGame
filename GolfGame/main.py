@@ -33,6 +33,12 @@ wood_rect = wood.get_rect(topleft = (100, 300))
 hole_surface = pygame.image.load('graphics/flag.png')
 hole_surface = pygame.transform.scale(hole_surface,(90, 100)).convert_alpha()
 
+#create an invisible rectangle for scoring 
+s = pygame.Surface((16,5)) 
+s_rect = s.get_rect(topleft = (630, 300))
+s.set_alpha(128)               
+s.fill((255,255,255))           
+    
 #create font
 test_font = pygame.font.Font('graphics/munro.ttf', 25)
 
@@ -53,9 +59,10 @@ score = 0
 def redrawWindow():
     text_surface = test_font.render('Strokes:' + str(score), True, 'White')
     screen.blit(sky_surface, (0, 0))
+    screen.blit(s, (630,300))
     screen.blit(wood, wood_rect)
     screen.blit(text_surface, (675, 5))
-
+    
     golfBall.draw(screen)
     screen.blit(hole_surface, (560, 203))
     pygame.draw.line(screen, (255, 255, 255), line[0], line[1])
@@ -166,7 +173,33 @@ while True:
                 vely = math.sin(angle) * power
                 time = 0
 
-
+    # ends game if ball goes in hole
+    sunk = collision(s_rect,  golfBall.x, golfBall.y, golfBall.radius)
+    if sunk:
+        break
+        
     # update all the elements
     redrawWindow()
+    clock.tick(60)
+
+
+# End game title
+while True: 
+    text_surface = test_font.render('Strokes:' + str(score), True, 'White')
+    screen.blit(sky_surface, (0, 0))
+    screen.blit(s, (630,300))
+    screen.blit(wood, wood_rect)
+    screen.blit(text_surface, (width / 2, height / 2))
+    
+    golfBall.draw(screen)
+    screen.blit(hole_surface, (560, 203))
+
+    pygame.display.update()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+
+
     clock.tick(60)
