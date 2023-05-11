@@ -34,13 +34,14 @@ hole_surface = pygame.image.load('graphics/flag.png')
 hole_surface = pygame.transform.scale(hole_surface,(90, 100)).convert_alpha()
 
 #create an invisible rectangle for scoring 
-s = pygame.Surface((16,5)) 
-s_rect = s.get_rect(topleft = (630, 300))
+s = pygame.Surface((1,5)) 
+s_rect = s.get_rect(topleft = (637, 300))
 s.set_alpha(128)               
 s.fill((255,255,255))           
     
 #create font
-test_font = pygame.font.Font('graphics/munro.ttf', 25)
+score_font = pygame.font.Font('graphics/munro.ttf', 25)
+end_font = pygame.font.Font('graphics/munro.ttf', 50)
 
 
 #create a golf ball object
@@ -57,9 +58,9 @@ score = 0
 
 # function for drawing background, golf ball and intensity line
 def redrawWindow():
-    text_surface = test_font.render('Strokes:' + str(score), True, 'White')
+    text_surface = score_font.render('Strokes:' + str(score), True, 'White')
     screen.blit(sky_surface, (0, 0))
-    screen.blit(s, (630,300))
+    screen.blit(s, (637,300))
     screen.blit(wood, wood_rect)
     screen.blit(text_surface, (675, 5))
     
@@ -185,11 +186,12 @@ while True:
 
 # End game title
 while True: 
-    text_surface = test_font.render('Strokes:' + str(score), True, 'White')
+    text_surface = end_font.render('Strokes:' + str(score), True, 'White')
+    text_rect = text_surface.get_rect(center = (width / 2, height / 2))
     screen.blit(sky_surface, (0, 0))
     screen.blit(s, (630,300))
     screen.blit(wood, wood_rect)
-    screen.blit(text_surface, (width / 2, height / 2))
+    screen.blit(text_surface, text_rect)
     
     golfBall.draw(screen)
     screen.blit(hole_surface, (560, 203))
